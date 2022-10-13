@@ -4,9 +4,14 @@ import { BiLike } from "react-icons/bi"
 import { BiDislike } from "react-icons/bi"
 import { AiFillInfoCircle } from "react-icons/ai"
 import { AiOutlineEye } from 'react-icons/ai'
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
+import { useQuery } from 'react-query';
+import Loading from '../../shared/Loading/Loading';
 
 
 const Video = ({ video }) => {
+    const [user, UserLoading, error] = useAuthState(auth);
     const [loading, setLoading] = useState(false)
     const [videoInfo, setVideoInfo] = useState({})
     useEffect(() => {
@@ -31,10 +36,40 @@ const Video = ({ video }) => {
             autoplay: 0,
         },
     };
-    const [linkCount, setLikeCount] = useState(0)
-    const handleLink = () => {
-        setLikeCount(linkCount + 1)
+
+    const handleLike = (id) => {
+        const sendLikeInfo = {
+            likeCountUser: user?.email,
+            name: user?.displayName,
+            id: id
+        }
+        fetch(`http://localhost:5000/likeDislike`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(sendLikeInfo)
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result) {
+                    console.log(result);
+                }
+
+
+            })
+
     }
+    const { data: getLike, isLoading, refetch } = useQuery('getLike', () => fetch('http://localhost:5000/likeDislike', {
+        method: 'GET',
+    })
+        .then(res => res.json()))
+    refetch()
+    if (isLoading) {
+        return <Loading />
+    }
+    const countLike = getLike.find(like => like.id === video._id)
+    const singleVideosLike = getLike.filter(like => like.id === video._id)
     return (
 
         <div className='w-96 p-3 bg-slate-300'>
@@ -45,7 +80,10 @@ const Video = ({ video }) => {
             }
             <div className='flex justify-between items-center text-2xl mt-2'>
                 <div className='flex justify-center gap-2'>
-                    <BiLike onClick={handleLink} />
+                    <BiLike onClick={() => handleLike(video._id)} />
+                    {
+                        countLike ? singleVideosLike.length : 0
+                    }
                     <BiDislike />
                 </div>
                 <AiFillInfoCircle />
