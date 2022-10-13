@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import { BiLike } from "react-icons/bi"
-import { BiDislike } from "react-icons/bi"
 import { AiFillInfoCircle } from "react-icons/ai"
 import { AiOutlineEye } from 'react-icons/ai'
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -9,9 +8,13 @@ import auth from '../../firebase.init';
 import { useQuery } from 'react-query';
 import Loading from '../../shared/Loading/Loading';
 import Dislike from './Dislike';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import useLikes from '../../hooks/useLikes';
 
 
 const Video = ({ video }) => {
+    const { Likes } = useLikes()
     const [user, UserLoading, error] = useAuthState(auth);
     const [loading, setLoading] = useState(false)
     const [videoInfo, setVideoInfo] = useState({})
@@ -41,26 +44,37 @@ const Video = ({ video }) => {
     // handle like 
 
     const handleLike = (id) => {
-        const sendLikeInfo = {
-            likeCountUser: user?.email,
-            name: user?.displayName,
-            id: id
+        const liked = Likes.find(like => like?.likeCountUser === user?.email && like?.id === id)
+        if (user) {
+            const sendLikeInfo = {
+                likeCountUser: user?.email,
+                name: user?.displayName,
+                id: id
+            }
+
+            if (!liked) {
+                fetch(`http://localhost:5000/likeDislike`, {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(sendLikeInfo)
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result) {
+                            console.log(result);
+                        }
+
+
+                    })
+            } else if (liked) {
+                toast.error("Already Liked")
+            }
+
+        } else {
+            toast.error("Please Login then like video")
         }
-        fetch(`http://localhost:5000/likeDislike`, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(sendLikeInfo)
-        })
-            .then(res => res.json())
-            .then(result => {
-                if (result) {
-                    console.log(result);
-                }
-
-
-            })
 
     }
     const { data: getLike, isLoading, refetch } = useQuery('getLike', () => fetch('http://localhost:5000/likeDislike', {
@@ -83,13 +97,13 @@ const Video = ({ video }) => {
             }
             <div className='flex justify-between items-center text-2xl mt-2'>
                 <div className='flex justify-center gap-2'>
-                    <BiLike onClick={() => handleLike(video._id)} />
+                    <BiLike className='cursor-pointer' onClick={() => handleLike(video._id)} />
                     {
                         countLike ? singleVideosLike.length : 0
                     }
                     <Dislike video={video._id} />
                 </div>
-                <AiFillInfoCircle />
+                <Link to={`videoDetails/${video._id}`}><AiFillInfoCircle /></Link>
             </div>
         </div>
 

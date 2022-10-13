@@ -8,6 +8,7 @@ import MyVideos from './components/Dashboard/MyVideos';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './pages/Footer/Footer';
+import VideoDetails from './pages/HomePage/VideoDetails';
 import RequireAuth from './shared/RequireAuth';
 
 
@@ -26,6 +27,7 @@ function App() {
         </Route>
         <Route path='/login' element={<Login />} />
         <Route path='/createaccount' element={<CreateAccount />} />
+        <Route path='/videoDetails/:id' element={<VideoDetails />} />
       </Routes>
       <Footer />
     </div>

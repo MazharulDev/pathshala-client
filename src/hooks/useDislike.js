@@ -1,18 +1,15 @@
-import { useQuery } from "react-query";
-import Loading from "../shared/Loading/Loading";
+import { useEffect, useState } from "react";
 
-const useDislike = () => {
-    const { data: getDisLike, isLoading, refetch } = useQuery('getLike', () => fetch('http://localhost:5000/likeDislike/dislike', {
-        method: 'GET',
-    })
-        .then(res => res.json()))
-    refetch()
-    if (isLoading) {
-        return <Loading />
-    }
+const useDislikes = () => {
+    const [disLike, setDisLike] = useState([])
 
+    useEffect(() => {
+        fetch('http://localhost:5000/likeDislike/dislike')
+            .then((res) => res.json())
+            .then((data) => setDisLike(data));
+    }, [])
 
-    return { getDisLike }
+    return { disLike }
 };
 
-export default useDislike;
+export default useDislikes;
