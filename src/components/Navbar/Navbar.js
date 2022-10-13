@@ -25,7 +25,7 @@ const Navbar = () => {
                     <Link className='hover:text-gray-300' to="/Dashboard">Dashboard</Link>
                 </div>
                 <div className='flex justify-center items-center gap-3'>
-                    <p>Email</p>
+                    <p>{user?.email}</p>
                     {
                         user ? <button onClick={() => signOut(auth)} className='px-2 py-1 bg-red-400 rounded-lg hover:bg-red-300'>Logout</button> : <Link to="/login" className='px-2 py-1 bg-red-400 rounded-lg hover:bg-red-300'>Login</Link>
                     }
