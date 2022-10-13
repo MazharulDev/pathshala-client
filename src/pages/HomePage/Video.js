@@ -8,6 +8,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useQuery } from 'react-query';
 import Loading from '../../shared/Loading/Loading';
+import Dislike from './Dislike';
 
 
 const Video = ({ video }) => {
@@ -36,6 +37,8 @@ const Video = ({ video }) => {
             autoplay: 0,
         },
     };
+
+    // handle like 
 
     const handleLike = (id) => {
         const sendLikeInfo = {
@@ -84,7 +87,7 @@ const Video = ({ video }) => {
                     {
                         countLike ? singleVideosLike.length : 0
                     }
-                    <BiDislike />
+                    <Dislike video={video._id} />
                 </div>
                 <AiFillInfoCircle />
             </div>

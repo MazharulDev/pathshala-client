@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import MyVideos from './components/Dashboard/MyVideos';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
+import Footer from './pages/Footer/Footer';
 import RequireAuth from './shared/RequireAuth';
 
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/createaccount' element={<CreateAccount />} />
       </Routes>
+      <Footer />
     </div>
   );
 }
