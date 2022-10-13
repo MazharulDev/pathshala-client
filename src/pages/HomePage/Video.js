@@ -53,7 +53,7 @@ const Video = ({ video }) => {
             }
 
             if (!liked) {
-                fetch(`http://localhost:5000/likeDislike`, {
+                fetch(`https://gentle-journey-98275.herokuapp.com/likeDislike`, {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'
@@ -77,7 +77,7 @@ const Video = ({ video }) => {
         }
 
     }
-    const { data: getLike, isLoading, refetch } = useQuery('getLike', () => fetch('http://localhost:5000/likeDislike', {
+    const { data: getLike, isLoading, refetch } = useQuery('getLike', () => fetch('https://gentle-journey-98275.herokuapp.com/likeDislike', {
         method: 'GET',
     })
         .then(res => res.json()))

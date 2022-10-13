@@ -19,7 +19,7 @@ const Dislike = ({ video }) => {
                 id: id
             }
             if (!disLiked) {
-                fetch(`http://localhost:5000/likeDislike/dislike`, {
+                fetch(`https://gentle-journey-98275.herokuapp.com/likeDislike/dislike`, {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'
@@ -41,7 +41,7 @@ const Dislike = ({ video }) => {
             toast.error("Please login then dislike video")
         }
     }
-    const { data: getDisLike, isLoading, refetch } = useQuery('getdisLike', () => fetch('http://localhost:5000/likeDislike/dislike', {
+    const { data: getDisLike, isLoading, refetch } = useQuery('getdisLike', () => fetch('https://gentle-journey-98275.herokuapp.com/likeDislike/dislike', {
         method: 'GET',
     })
         .then(res => res.json()))

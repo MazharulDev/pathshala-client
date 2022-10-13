@@ -4,7 +4,7 @@ const useVideos = () => {
     const [videos, setVideos] = useState([])
 
     useEffect(() => {
-        fetch('http://localhost:5000/videos')
+        fetch('https://gentle-journey-98275.herokuapp.com/videos')
             .then((res) => res.json())
             .then((data) => setVideos(data));
     }, [])

@@ -15,7 +15,7 @@ const AddVideo = () => {
             youtubeID: youtubeId,
             author: user.email,
         }
-        fetch('http://localhost:5000/videos', {
+        fetch('https://gentle-journey-98275.herokuapp.com/videos', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

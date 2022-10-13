@@ -4,7 +4,7 @@ const useDislikes = () => {
     const [disLike, setDisLike] = useState([])
 
     useEffect(() => {
-        fetch('http://localhost:5000/likeDislike/dislike')
+        fetch('https://gentle-journey-98275.herokuapp.com/likeDislike/dislike')
             .then((res) => res.json())
             .then((data) => setDisLike(data));
     }, [])

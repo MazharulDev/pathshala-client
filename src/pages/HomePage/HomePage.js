@@ -4,7 +4,7 @@ import Loading from '../../shared/Loading/Loading';
 import Video from './Video';
 
 const HomePage = () => {
-    const { data: videos, isLoading, refetch } = useQuery('taskList', () => fetch('http://localhost:5000/videos', {
+    const { data: videos, isLoading, refetch } = useQuery('taskList', () => fetch('https://gentle-journey-98275.herokuapp.com/videos', {
         method: 'GET',
     })
         .then(res => res.json()))
